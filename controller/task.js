@@ -16,7 +16,7 @@ const addTask = async (req,res) =>{
     console.log({title, status, priority, created_by, assign_to, description, created_date});
     const date = new Date(); // Replace this with your date object
 
-    const isoString = new Intl.DateTimeFormat('sv', {
+    new Intl.DateTimeFormat('sv', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -64,8 +64,48 @@ async function getTaskByProject(req, res){
     
       }
 }
+async function getTasksByDate(req, res) {
+  try {
+    const { startDate } = req.body;
+
+    // Validate if startDate is provided
+    if (!startDate) {
+      return res.status(400).json({ error: "startDate is a required query parameter" });
+    }
+
+
+    const date = new Date(startDate);
+    const utcDateString = date.toUTCString();
+    const utcDate = new Date(utcDateString);
+    
+    console.log({startDate, utcDate})
+
+    const taskList = await sql`
+      SELECT
+        tid, title, status, priority, created_by, assign_to, description, created_date
+      FROM
+        public.task_list
+      WHERE
+        created_date >= ${utcDate}
+      ORDER BY
+        created_date
+    `;
+
+    return res.json(taskList);
+  } catch (e) {
+    console.log("Error getting the list of tasks by date", e);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+
+
+
+
+
 
 module.exports = {
     addTask,
-    getTaskByProject
+    getTaskByProject,
+    getTasksByDate
 }
