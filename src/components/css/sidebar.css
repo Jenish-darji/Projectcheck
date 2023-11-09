@@ -1,0 +1,22 @@
+#sidebar{
+    width: 150px;
+height: 1024px;
+flex-shrink: 0;
+border-radius: 0px 34px 34px 0px;
+background: #353A56;
+color: #d3d3d3;
+}
+.nav-item{
+    
+
+font-family: Poppins;
+font-size: 24px;
+font-style: normal;
+font-weight: 600;
+line-height: normal;
+}
+.divider{
+    border-top: 2px solid #d3d3d3; /* Set thickness and color here */
+    margin-top: 20px;
+    margin-bottom: 20px; /* Adjust margin as needed */
+}
